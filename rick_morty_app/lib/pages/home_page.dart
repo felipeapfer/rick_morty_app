@@ -4,13 +4,13 @@ import 'package:rick_morty_app/pages/episodes_page.dart';
 import 'package:rick_morty_app/pages/test.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({Key? key}) : super(key: key);
+  const HomePage({Key? key}) : super(key: key);
 
   @override
-  _HomePageState createState() => _HomePageState();
+  HomePageState createState() => HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class HomePageState extends State<HomePage> {
   int paginaAtual = 0;
   late PageController pc;
 

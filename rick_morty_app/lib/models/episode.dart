@@ -1,7 +1,7 @@
 class Episode {
   final int id;
   final String name;
-  final String air_date;
+  final String airDate;
   final String episode;
   final String created;
   final String url;
@@ -10,7 +10,7 @@ class Episode {
   Episode({
     required this.id,
     required this.name,
-    required this.air_date,
+    required this.airDate,
     required this.episode,
     required this.created,
     required this.url,
