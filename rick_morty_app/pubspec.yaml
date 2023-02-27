@@ -37,6 +37,23 @@ dependencies:
   cupertino_icons: ^1.0.2
   intl: ^0.18.0
   provider: ^6.0.5
+  flutter_native_splash: ^1.2.0
+  flutter_launcher_icons: ^0.9.1
+
+flutter_native_splash:
+  color: "#FF3D3D3D"
+  image: "assets/img/rick_morty.png"
+  android: true
+  ios: true
+
+flutter_icons:
+  image_path: "assets/img/rick_morty.png"
+  remove_alpha_ios: true
+  android: "launcher_icon"
+  
+
+
+
 
 dev_dependencies:
   flutter_test:
@@ -61,8 +78,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
+  assets:
+    - assets/img/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -33,9 +33,9 @@ class HomePageState extends State<HomePage> {
         controller: pc,
         onPageChanged: setPaginaAtual,
         children: const [
-          EpisodesPage(),
-          CharactersPage(),
           Test(),
+          CharactersPage(),
+          //Test(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -45,7 +45,7 @@ class HomePageState extends State<HomePage> {
           BottomNavigationBarItem(icon: Icon(Icons.list), label: 'Episodes'),
           BottomNavigationBarItem(
               icon: Icon(Icons.person), label: 'Characters'),
-          BottomNavigationBarItem(icon: Icon(Icons.star), label: 'Test'),
+          BottomNavigationBarItem(icon: Icon(Icons.star), label: 'Locations'),
           //  BottomNavigationBarItem(
           //      icon: Icon(Icons.account_balance_wallet), label: 'Carteira'),
           //BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Conta'),
