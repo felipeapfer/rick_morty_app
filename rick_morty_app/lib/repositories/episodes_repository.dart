@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 class EpisodeRepository extends ChangeNotifier {
   bool isLoading = true;
   List<Episode> _episodes = [];
+  String uri = "https://rickandmortyapi.com/api/episode/";
 
   List<Episode> get episodes => _episodes;
 
@@ -14,20 +15,20 @@ class EpisodeRepository extends ChangeNotifier {
   }
 
   Future getEpisodesbyDay(dateIndex) async {
-    String uri = "https://rickandmortyapi.com/api/episode/";
     isLoading = true;
+    var local_url = uri;
     notifyListeners();
     for (var j = (dateIndex) * 7; j < (dateIndex + 1) * 7; j++) {
-      uri += "${j.toString()},";
+      local_url += "${j.toString()},";
     }
-    uri = uri.substring(0, uri.length - 1);
+    local_url = local_url.substring(0, local_url.length - 1);
+
     try {
-      final response = await http.get(Uri.parse(uri));
+      final response = await http.get(Uri.parse(local_url));
       if (response.statusCode == 200) {
         final json = jsonDecode(response.body);
 
         _episodes = [];
-
         for (var element in json) {
           List<String> p = [];
           for (var personagem in element['characters']) {

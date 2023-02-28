@@ -28,60 +28,63 @@ class _TestState extends State<Test> {
           appBar: AppBar(
             title: const Text('Home Page'),
           ),
-          body: Center(
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                const SizedBox(
-                  height: 100,
-                  child: DateSelector(),
-                ),
-                es.isLoading
-                    ? const CircularProgressIndicator()
-                    : ListView.separated(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemBuilder: (BuildContext context, int episode) {
-                          return ListTile(
-                            leading: SizedBox(
-                              width: 40,
-                              child: CircleAvatar(
-                                radius: 40,
-                                backgroundColor: Theme.of(context).primaryColor,
-                                child: Text(
-                                  es.episodes[episode].id.toString(),
-                                  style: const TextStyle(
-                                      fontSize: 20,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                            ),
-                            title: Row(
-                              children: [
-                                Text(
-                                  es.episodes[episode].name,
-                                  style: const TextStyle(
-                                    color: Colors.black87,
-                                    fontSize: 14,
+          body: SingleChildScrollView(
+            child: Center(
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                  const SizedBox(
+                    height: 100,
+                    child: DateSelector(),
+                  ),
+                  es.isLoading
+                      ? const CircularProgressIndicator()
+                      : ListView.separated(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemBuilder: (BuildContext context, int episode) {
+                            return ListTile(
+                              leading: SizedBox(
+                                width: 40,
+                                child: CircleAvatar(
+                                  radius: 40,
+                                  backgroundColor:
+                                      Theme.of(context).primaryColor,
+                                  child: Text(
+                                    es.episodes[episode].id.toString(),
+                                    style: const TextStyle(
+                                        fontSize: 20,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold),
                                   ),
                                 ),
-                              ],
-                            ),
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => EpisodeDetails(
-                                        ep: es.episodes[episode])),
-                              );
-                            },
-                          );
-                        },
-                        separatorBuilder: (_, ___) => const Divider(),
-                        itemCount: es.episodes.length,
-                      ),
-              ]))),
+                              ),
+                              title: Row(
+                                children: [
+                                  Text(
+                                    es.episodes[episode].name,
+                                    style: const TextStyle(
+                                      color: Colors.black87,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => EpisodeDetails(
+                                          ep: es.episodes[episode])),
+                                );
+                              },
+                            );
+                          },
+                          separatorBuilder: (_, ___) => const Divider(),
+                          itemCount: es.episodes.length,
+                        ),
+                ])),
+          )),
     );
   }
 }
