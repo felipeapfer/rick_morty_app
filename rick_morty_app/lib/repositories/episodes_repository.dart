@@ -16,15 +16,15 @@ class EpisodeRepository extends ChangeNotifier {
 
   Future getEpisodesbyDay(dateIndex) async {
     isLoading = true;
-    var local_url = uri;
+    var localUrl = uri;
     notifyListeners();
     for (var j = (dateIndex) * 7; j < (dateIndex + 1) * 7; j++) {
-      local_url += "${j.toString()},";
+      localUrl += "${j.toString()},";
     }
-    local_url = local_url.substring(0, local_url.length - 1);
+    localUrl = localUrl.substring(0, localUrl.length - 1);
 
     try {
-      final response = await http.get(Uri.parse(local_url));
+      final response = await http.get(Uri.parse(localUrl));
       if (response.statusCode == 200) {
         final json = jsonDecode(response.body);
 

@@ -1,10 +1,6 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:rick_morty_app/models/character.dart';
 import 'package:rick_morty_app/models/episode.dart';
-import 'package:rick_morty_app/repositories/characteres_repository.dart';
 
 import 'episode_character_details.dart';
 

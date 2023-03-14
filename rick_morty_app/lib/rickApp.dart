@@ -1,7 +1,7 @@
 // ignore: file_names
 // ignore: file_names
 import 'package:flutter/material.dart';
-import 'package:rick_morty_app/pages/home_page.dart';
+import 'package:rick_morty_app/widgets/auth_check.dart';
 
 class RickApp extends StatelessWidget {
   const RickApp({Key? key}) : super(key: key);
@@ -14,7 +14,7 @@ class RickApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.orange,
       ),
-      home: const HomePage(),
+      home: const AuthCheck(),
     );
   }
 }

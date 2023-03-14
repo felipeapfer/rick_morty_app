@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 class CharacterRepository extends ChangeNotifier {
   bool isLoading = true;
   List<Character> _characteres = [];
-  Map<int, Character> _episode_ref = {};
+  Map<int, Character> _episodeRef = {};
 
   String uri = "https://rickandmortyapi.com/api/character";
 
@@ -18,32 +18,19 @@ class CharacterRepository extends ChangeNotifier {
   }
 
   getCharById(id) async {
-    if (_episode_ref.containsKey(id)) {
-      print("Cache Map");
-      return _episode_ref[id];
+    if (_episodeRef.containsKey(id)) {
+      return _episodeRef[id];
     } else {
-      print("Request API");
       var url = "$uri/${id.toString()}";
       final response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
         var json = jsonDecode(response.body);
-        _episode_ref[id] = Character.fromJson(json);
-        return _episode_ref[id];
+        _episodeRef[id] = Character.fromJson(json);
+        return _episodeRef[id];
       } else {
         return null;
       }
     }
-
-    /* var url = "$uri/${id.toString()}";
-    final response = await http.get(Uri.parse(url));
-    if (response.statusCode == 200) {
-      print(response);
-      final json = jsonDecode(response.body);
-      //_episode_ref[id] = Character.fromJson(json);
-      return Character.fromJson(json);
-    } else {
-      throw Exception("Erro no Json");
-    } */
   }
 
   Future getAllCharacteres() async {
