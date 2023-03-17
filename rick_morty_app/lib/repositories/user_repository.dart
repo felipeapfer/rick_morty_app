@@ -46,12 +46,11 @@ class UserRepository extends ChangeNotifier {
     }
   }
 
-  Future<bool> resendConfirmationCode(email) async {
+  resendConfirmationCode(email) async {
     final cognitoUser = CognitoUser(email, userPool);
     final String status;
     try {
       status = await cognitoUser.resendConfirmationCode();
-      return true;
     } on Exception catch (e) {
       debugPrint(e.toString());
     }
@@ -76,13 +75,18 @@ class UserRepository extends ChangeNotifier {
             Uri.parse(
               'https://staging-api.radaresportivo.com/users/me',
             ),
-            headers: {'Authorization': token!});
+            headers: {
+              'Authorization': token!,
+              'Accept-Charset': 'iso-8859-1',
+            });
         if (response.statusCode == 200) {
-          final json = jsonDecode(response.body);
+          //final json = jsonDecode(response.body);
+          final json = jsonDecode(utf8.decode(response.bodyBytes));
           _user = User.fromJson(json);
         }
       } on Exception catch (e) {
-        debugPrint(e.toString());
+        throw RadarAuthExecption('LOGIN_API_ERROR', 'Erro ao fazer login');
+        //debugPrint(e.toString());
       }
       notifyListeners();
     } on CognitoUserNewPasswordRequiredException catch (e) {
@@ -106,22 +110,16 @@ class UserRepository extends ChangeNotifier {
           throw RadarAuthExecption('UNKNOWN_ERROR',
               "Por favor verifique sua conexão com a Internet.");
       }
-      debugPrint(e.toString());
     } on Exception catch (e) {
       throw RadarException('Erro inesperado');
     }
-
-    //Call https://api.radaresportivo.com/users/me to load user object.
-    //Understand how to call using token given
-    try {} on Exception catch (e) {}
   }
 
-  Future<bool> changePassword(oldPassword, newPassword) async {
+  changePassword(oldPassword, newPassword) async {
     if (isLoggedIn) {
       final cognitoUser = CognitoUser(user.email, userPool);
       try {
         await cognitoUser.changePassword('oldPassword', 'newPassword');
-        return true;
       } on Exception catch (e) {
         debugPrint(e.toString());
       }
@@ -137,7 +135,9 @@ class UserRepository extends ChangeNotifier {
               'https://staging-api.radaresportivo.com/users/me',
             ),
             headers: {
-              'Authorization': token!
+              'Authorization': token!,
+              /*  'Content-Type': 'application/json; charset=utf-8',
+              'Accept': 'application/json; charset=utf-8', */
             },
             body: {
               'name': newName,
@@ -156,10 +156,20 @@ class UserRepository extends ChangeNotifier {
     final cognitoUser = CognitoUser(email, userPool);
     try {
       await cognitoUser.forgotPassword();
-    } catch (e) {
+    } on CognitoClientException catch (e) {
+      switch (e.name) {
+        case 'UserNotFoundException':
+          debugPrint("Email não cadastrado!");
+          throw RadarAuthExecption('INVALID_EMAIL', "Email não cadastado!");
+        case null:
+          throw RadarAuthExecption('UNKNOWN_ERROR',
+              "Por favor verifique sua conexão com a Internet.");
+      }
+    } on Exception catch (e) {
       debugPrint(e.toString());
       //Treat Email does not exist execpetion
     }
+    debugPrint("Email enviado!");
   }
 
   signOut() async {

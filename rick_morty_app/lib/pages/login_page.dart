@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rick_morty_app/pages/forgot_password.dart';
 import 'package:rick_morty_app/repositories/user_repository.dart';
 
 class LoginPage extends StatefulWidget {
@@ -27,6 +28,13 @@ class _LoginPageState extends State<LoginPage> {
     setFormAction(true);
   }
 
+  @override
+  void dispose() {
+    email.dispose();
+    senha.dispose();
+    super.dispose();
+  }
+
   setFormAction(bool acao) {
     setState(() {
       isLogin = acao;
@@ -48,8 +56,31 @@ class _LoginPageState extends State<LoginPage> {
       await context.read<UserRepository>().singIn(email.text, senha.text);
     } on RadarAuthExecption catch (e) {
       setState(() => loading = false);
+      switch (e.type) {
+        case 'INVALID_EMAIL':
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text(e.message)));
+          break;
+        case 'INVALID_PASSWORD':
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text(e.message)));
+          break;
+        case 'UNKNOWN_ERROR':
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text(e.message)));
+          break;
+        case 'NEEDS_USER_CONFIRMATION':
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text(e.message)));
+          break;
+        case 'RESET_PASSWORD':
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text(e.message)));
+          break;
+      }
+    } on Exception catch (_) {
       ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(e.message)));
+          .showSnackBar(const SnackBar(content: Text('Erro inesperado.')));
     }
     setState(() => loading = false);
   }
@@ -59,11 +90,35 @@ class _LoginPageState extends State<LoginPage> {
     try {
       await context.read<UserRepository>().signUp(email.text, senha.text);
       // ignore: use_build_context_synchronously
-      Navigator.of(context).push(
+      /*  Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => const Scaffold(),
-        ),
-      );
+        ), 
+      );*/
+    } on RadarAuthExecption catch (e) {
+      setState(() => loading = false);
+      switch (e.type) {
+        case 'INVALID_EMAIL':
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text(e.message)));
+          break;
+        case 'INVALID_PASSWORD':
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text(e.message)));
+          break;
+        case 'UNKNOWN_ERROR':
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text(e.message)));
+          break;
+        case 'NEEDS_USER_CONFIRMATION':
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text(e.message)));
+          break;
+        case 'RESET_PASSWORD':
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text(e.message)));
+          break;
+      }
     } on Exception catch (e) {
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text(e.toString())));
@@ -102,7 +157,11 @@ class _LoginPageState extends State<LoginPage> {
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Informe o email corretamente!';
+                      } else if (!RegExp(r'^[\w-\.\+]+@([\w-]+\.)+[\w-]{2,4}$')
+                          .hasMatch(value)) {
+                        return 'Please enter a valid email';
                       }
+
                       return null;
                     },
                   ),
@@ -179,6 +238,20 @@ class _LoginPageState extends State<LoginPage> {
                 TextButton(
                   onPressed: () => setFormAction(!isLogin),
                   child: Text(toggleButton),
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 10),
+                  child: Divider(
+                    thickness: 1,
+                  ),
+                ),
+                TextButton(
+                  onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const ForgotPassowrdPage())),
+                  child: const Text('Esqueci a senha'),
                 ),
               ],
             ),
